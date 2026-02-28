@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const connectDB = require("./config/db"); // ต้องมีไฟล์เชื่อม DB ของอาจารย์
+const connectDB = require("./config/db");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
@@ -15,41 +15,51 @@ const swaggerUI = require("swagger-ui-express");
 dotenv.config({ path: "./config/config.env" });
 
 // เชื่อมต่อฐานข้อมูล
-connectDB(); // <--- อย่าลืมเรียกใช้ฟังก์ชันนี้!
+connectDB(); 
 
-// Route files
-const hospitals = require("./routes/hospitals"); // ของเดิมที่คุณน่าจะมีอยู่แล้ว
-const appointments = require("./routes/appointments");
+// Route files (นำเข้าไฟล์ Route ใหม่ที่เราเพิ่งแก้ไป)
+const coworkingspaces = require("./routes/coworkingspaces"); 
+const bookings = require("./routes/bookings");
 const auth = require("./routes/auth");
 
 const app = express();
 
 // Body parser
 app.use(express.json());
+// Sanitize data
 app.use(mongoSanitize());
+// Set cookie parser
 app.use(cookieParser());
+// Set security headers
 app.use(helmet());
+// Prevent XSS attacks
 app.use(xss());
 
+// Rate limiting
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, //10 mins
+  windowMs: 10 * 60 * 1000, // 10 mins
   max: 50,
 });
-
 app.use(limiter);
+
+// Prevent http param pollution
 app.use(hpp());
+
+// Enable CORS
 app.use(cors());
+
+// อัปเดต Swagger ให้เป็นข้อมูลของโปรเจกต์ Co-working Space
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Library API",
+      title: "Co-working Space API",
       version: "1.0.0",
-      description: "A simple Express VacQ API",
+      description: "Project 6 - Co-working Space Reservation Backend API",
     },
     servers: [
       {
-        url: "http://localhost:5003/api/v1",
+        url: `http://localhost:${process.env.PORT || 5000}/api/v1`,
       },
     ],
   },
@@ -58,19 +68,25 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-// Mount routers
-app.use("/api/v1/hospitals", hospitals);
-app.use("/api/v1/appointments", appointments);
+// Mount routers (เปลี่ยน Path ให้เป็น API ของระบบใหม่)
+app.use("/api/v1/coworkingspaces", coworkingspaces);
+app.use("/api/v1/bookings", bookings);
 app.use("/api/v1/auth", auth);
 
-const PORT = process.env.PORT || 5003;
-
+const PORT = process.env.PORT || 5000;
 const server = app.listen(
   PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`),
+  console.log(
+    "Server running in",
+    process.env.NODE_ENV,
+    "mode on port",
+    PORT
+  )
 );
 
+// Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`);
+  // Close server & exit process
   server.close(() => process.exit(1));
 });
