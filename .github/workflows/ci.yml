@@ -1,0 +1,33 @@
+name: Node.js CI (Coworking Space API)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # จำลองการรันบน Node.js 2 เวอร์ชั่นเพื่อความชัวร์
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm install
+
+    # หมายเหตุ: เราคอมเมนต์บรรทัด run test ไว้ เพราะโปรเจกต์เรายังไม่ได้เขียนไฟล์ Test (Jest/Mocha) 
+    # แต่แค่เช็ค npm install ผ่านก็ถือเป็นการทำ CI ขั้นพื้นฐานแล้วครับ
+    # - name: Run Tests
+    #   run: npm test
