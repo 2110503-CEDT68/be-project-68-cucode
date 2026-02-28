@@ -2,26 +2,22 @@ const User = require("../models/User");
 
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    // 1. เพิ่ม tel เข้ามาตอนรับค่า
+    const { name, tel, email, password, role } = req.body; 
 
-    // สร้าง user ลงฐานข้อมูล
+    // 2. เพิ่ม tel เข้าไปตอนสร้าง user ลงฐานข้อมูล
     const user = await User.create({
       name,
+      tel,   // <--- ใส่ตรงนี้ด้วย
       email,
       password,
       role,
     });
 
-    // สร้าง token
-    //const token = user.getSignedJwtToken();
-
-    // ส่ง response กลับไปพร้อม token
-    //res.status(200).json({ success: true, token });
-
     sendTokenResponse(user, 200, res);
   } catch (err) {
     res.status(400).json({ success: false });
-    console.log(err.stack); // พิมพ์ error แจ้งใน Terminal
+    console.log(err.stack);
   }
 };
 
