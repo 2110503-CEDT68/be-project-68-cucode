@@ -1,0 +1,24 @@
+const express = require('express');
+const {
+    getBookings,
+    getBooking,
+    addBooking,
+    updateBooking,
+    deleteBooking
+} = require('../controllers/bookings');
+
+const { protect, authorize } = require('../middleware/auth');
+
+// ตั้งค่า mergeParams: true เพื่อให้สามารถรับค่า params (เช่น coworkingspaceId) ที่ถูกส่งต่อมาจาก route อื่นได้
+const router = express.Router({ mergeParams: true });
+
+router.route('/')
+    .get(protect, getBookings)
+    .post(protect, authorize('admin', 'user'), addBooking);
+
+router.route('/:id')
+    .get(protect, getBooking)
+    .put(protect, authorize('admin', 'user'), updateBooking)
+    .delete(protect, authorize('admin', 'user'), deleteBooking);
+
+module.exports = router;
