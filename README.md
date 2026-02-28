@@ -28,9 +28,13 @@
 
 ### 1. Use Case Diagram
 *(แสดงสิทธิ์การใช้งานของระบบระหว่าง User และ Admin)*
-![Use Case Diagram](./images/usecase.jpg) ### 2. Class Diagram (UML Profile)
+![Use Case Diagram](./images/usecase.jpg) 
+
+### 2. Class Diagram (UML Profile)
 *(แสดงโครงสร้างของฐานข้อมูลและความสัมพันธ์ระหว่าง User, CoworkingSpace และ Booking)*
-![Class Diagram](./images/class-diagram.png) ### 3. Sequence Diagram
+![Class Diagram](./images/class-diagram.png) 
+
+### 3. Sequence Diagram
 *(แสดงลำดับการทำงานและส่งข้อมูลของ API)*
 ![Sequence Diagram](./images/sequence-diagram.png) ---
 
