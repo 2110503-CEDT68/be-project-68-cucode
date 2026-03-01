@@ -28,10 +28,9 @@ const CoworkingSpaceSchema = new mongoose.Schema({
 
 // Cascade delete bookings when a coworking space is deleted
 // Middleware ตัวนี้จะทำงานตอนที่เราสั่ง coworkingspace.deleteOne() ใน Controller
-CoworkingSpaceSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
+CoworkingSpaceSchema.pre('deleteOne', { document: true, query: false }, async function() {
     console.log(`Bookings being removed from coworking space ${this._id}`);
     await this.model('Booking').deleteMany({ coworkingspace: this._id });
-    next();
 });
 
 // Reverse populate with virtuals

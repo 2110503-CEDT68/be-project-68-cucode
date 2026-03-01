@@ -91,8 +91,6 @@ exports.updateCoworkingSpace = async (req, res, next) => {
         res.status(400).json({ success: false });
     }
 };
-
-// @desc    Delete coworking space
 // @route   DELETE /api/v1/coworkingspaces/:id
 // @access  Private
 exports.deleteCoworkingSpace = async (req, res, next) => {
