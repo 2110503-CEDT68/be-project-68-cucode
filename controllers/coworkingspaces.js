@@ -51,9 +51,9 @@ exports.getCoworkingSpaces = async (req, res, next) => {
 // @access  Public
 exports.getCoworkingSpace = async (req, res, next) => {
     try {
-        const coworkingspace = await CoworkingSpace.findById(req.params.id);
+        const coworkingspace = await CoworkingSpace.findById(req.params.id).populate('bookings');
         if (!coworkingspace) {
-            return res.status(400).json({ success: false, message: 'Coworking space not found' });
+            return res.status(404).json({ success: false, message: 'Coworking space not found' });
         }
         res.status(200).json({ success: true, data: coworkingspace });
     } catch (err) {
@@ -84,7 +84,7 @@ exports.updateCoworkingSpace = async (req, res, next) => {
         });
 
         if (!coworkingspace) {
-            return res.status(400).json({ success: false });
+            return res.status(404).json({ success: false, message: 'Coworking space not found' });
         }
         res.status(200).json({ success: true, data: coworkingspace });
     } catch (err) {
