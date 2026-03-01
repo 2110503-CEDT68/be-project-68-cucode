@@ -15,17 +15,27 @@ exports.getBookings = async (req, res, next) => {
             select: 'name address tel open_close_time'
         });
     } else {
-        // ถ้าเป็น Admin ดึงการจองทั้งหมดมาดูได้
+        // ถ้าเป็น Admin ดึงการจองทั้งหมดมาดูได้ พร้อมดึงชื่อคนจองมาแสดง
         if (req.params.coworkingspaceId) {
-            query = Booking.find({ coworkingspace: req.params.coworkingspaceId }).populate({
-                path: 'coworkingspace',
-                select: 'name address tel open_close_time'
-            });
+            query = Booking.find({ coworkingspace: req.params.coworkingspaceId })
+                .populate({
+                    path: 'coworkingspace',
+                    select: 'name address tel open_close_time'
+                })
+                .populate({
+                    path: 'user', // <--- เพิ่มตรงนี้เพื่อให้โชว์ข้อมูลคนจอง
+                    select: 'name email tel' 
+                });
         } else {
-            query = Booking.find().populate({
-                path: 'coworkingspace',
-                select: 'name address tel open_close_time'
-            });
+            query = Booking.find()
+                .populate({
+                    path: 'coworkingspace',
+                    select: 'name address tel open_close_time'
+                })
+                .populate({
+                    path: 'user', // <--- เพิ่มตรงนี้เพื่อให้โชว์ข้อมูลคนจอง
+                    select: 'name email tel'
+                });
         }
     }
 
