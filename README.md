@@ -91,7 +91,7 @@
 
 ---
 
-## � Project Structure
+## 📁 Project Structure
 
 ```
 be-project-68-cucode/
@@ -100,7 +100,7 @@ be-project-68-cucode/
 │   └── db.js               # MongoDB connection
 ├── controllers/
 │   ├── auth.js             # Register, Login, GetMe, Logout
-│   ├── Bookings.js         # CRUD Bookings
+│   ├── bookings.js         # CRUD Bookings
 │   └── coworkingspaces.js  # CRUD Coworking Spaces
 ├── middleware/
 │   └── auth.js             # protect & authorize middleware
@@ -162,7 +162,7 @@ Server จะรันที่ `http://localhost:5000`
 
 ---
 
-## � API Endpoints
+## 📡 API Endpoints
 
 ### Auth (`/api/v1/auth`)
 
