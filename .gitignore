@@ -1,4 +1,9 @@
 # ignore all node_modules
 node_modules
-# igmore config file
+
+# ignore config file
 config/config.env
+
+# macOS system files
+.DS_Store
+*/.DS_Store
