@@ -69,14 +69,23 @@ exports.getMe = async (req, res, next) => {
 // @route   GET /api/v1/auth/logout
 // @access  Private
 exports.logout = async (req, res, next) => {
+  try{
   res.cookie("token", "none", {
-    expires: new Date(Date.now() + 10 * 1000),
+    expires: new Date(Date.now() + 500),
     httpOnly: true,
   });
   res.status(200).json({
     success: true,
-    data: {},
+    data: {}
   });
+  }
+  catch(err){
+    console.log(err);
+    res.status(400).json({
+      success:false,
+      data: {}
+    })
+  }
 };
 
 /**

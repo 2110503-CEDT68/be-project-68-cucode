@@ -18,7 +18,7 @@ dotenv.config({ path: "./config/config.env" });
 connectDB(); 
 
 // Route files (นำเข้าไฟล์ Route ใหม่ที่เราเพิ่งแก้ไป)
-const coworkingspaces = require("./routes/coworkingspaces"); 
+const coworkingspace = require("./routes/coworkingspace"); 
 const bookings = require("./routes/bookings");
 const auth = require("./routes/auth");
 
@@ -69,7 +69,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Mount routers (เปลี่ยน Path ให้เป็น API ของระบบใหม่)
-app.use("/api/v1/coworkingspaces", coworkingspaces);
+app.use("/api/v1/coworkingspace", coworkingspace);
 app.use("/api/v1/bookings", bookings);
 app.use("/api/v1/auth", auth);
 
