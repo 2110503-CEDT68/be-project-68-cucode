@@ -12,9 +12,43 @@ exports.getCoworkingSpaces = async (req, res, next) => {
         
         let queryStr = JSON.stringify(reqQuery);
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+    
+        let queryList = {};
 
+        if(req.query.name){
+            queryList.name = {$regex:req.query.name,$options:'i'};
+        }
+        else if(req.body.name){
+            queryList.name = {$regex:req.body.name,$options:'i'};
+        }
+        if(req.query.address){
+            queryList.address = {$regex:req.query.address,$options:'i'};
+        }
+        else if(req.body.address){
+            queryList.address = {$regex:req.body.address,$options:'i'};
+        }
+        if(req.query.tel){
+            queryList.tel = {$regex:req.query.tel,$options:'i'};
+        }
+        else if(req.body.tel){
+            queryList.tel = {$regex:req.body.tel,$options:'i'};
+        }
+        if(req.query.OpenTime){
+            queryList.OpenTime = {$lte:req.query.OpenTime};
+        }
+        else if(req.body.OpenTime){
+            queryList.OpenTime = {$lte:req.body.OpenTime};
+        }
+        if(req.query.CloseTime){
+            queryList.CloseTime = {$gte:req.query.CloseTime};
+        }
+        else if(req.body.OpenTime){
+            queryList.CloseTime= {$gte:req.body.CloseTime};
+        }
+
+        let queryListFinal = {...JSON.parse(queryStr),...queryList};
         // ดึงข้อมูล CoworkingSpace พร้อมกับการจอง (bookings) ที่เชื่อมโยงกัน
-        query = CoworkingSpace.find(JSON.parse(queryStr)).populate('bookings');
+        query = CoworkingSpace.find(queryListFinal).populate('bookings');
 
         if (req.query.select) {
             const fields = req.query.select.split(',').join(' ');
@@ -42,7 +76,7 @@ exports.getCoworkingSpaces = async (req, res, next) => {
 
         res.status(200).json({ success: true, count: coworkingspaces.length, pagination, data: coworkingspaces });
     } catch (err) {
-        res.status(400).json({ success: false });
+        res.status(400).json({ success: false, message:err.message});
     }
 };
 
@@ -107,14 +141,3 @@ exports.deleteCoworkingSpace = async (req, res, next) => {
     }
 };
 
-// @desc find Co-workingspace suit with requirement
-// @route GET /api/v1/coworkingspaces
-// @access
-exports.getCoworkingSpaceWithRequirement = async(req,res,next) => {
-    try{
-        
-    }
-    catch(err){
-        res.status(400).json({success:false})
-    }
-}
