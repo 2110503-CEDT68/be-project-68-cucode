@@ -65,7 +65,8 @@ class CoworkingSpace <<Document>> {
     + name : String <<required, unique, maxlength:50>>
     + address : String <<required>>
     + tel : String <<required>>
-    + open_close_time : String <<required>>
+    + OpenTime : String <<required>>
+    + CloseTime : String <<required>>
     --
     **Virtuals**
     ..
