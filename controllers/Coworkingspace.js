@@ -69,7 +69,7 @@ exports.createCoworkingSpace = async (req, res, next) => {
         const coworkingspace = await CoworkingSpace.create(req.body);
         res.status(201).json({ success: true, data: coworkingspace });
     } catch (err) {
-        res.status(400).json({ success: false });
+        res.status(400).json({ success: false, message:err.message});
     }
 };
 
@@ -106,3 +106,15 @@ exports.deleteCoworkingSpace = async (req, res, next) => {
         res.status(400).json({ success: false });
     }
 };
+
+// @desc find Co-workingspace suit with requirement
+// @route GET /api/v1/coworkingspaces
+// @access
+exports.getCoworkingSpaceWithRequirement = async(req,res,next) => {
+    try{
+        
+    }
+    catch(err){
+        res.status(400).json({success:false})
+    }
+}
